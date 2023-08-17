@@ -1,0 +1,8 @@
+__pycache__/
+.vagrant
+.sudo_as_admin_successful
+venv
+.idea/
+db.sqlite3
+node_modules
+.python-version

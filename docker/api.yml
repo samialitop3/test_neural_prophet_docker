@@ -1,0 +1,36 @@
+version: '3.7'
+
+networks:
+  testprophetnet:
+    driver: bridge
+
+services:
+    db:
+      container_name: testprophetdb
+      hostname: testprophetdb
+      image: postgres:13.2
+      restart: always
+      env_file: ./config/.env
+      networks:
+        - testprophetnet
+
+    api:
+      container_name: testprophetapi
+      hostname: testprophetapi
+      image: test_prophet:latest
+      env_file: ./config/.env
+      build:
+       context: .
+       dockerfile: ./services/api.Dockerfile
+      networks:
+        - testprophetnet
+      depends_on:
+        - db
+      ports:
+        - "0.0.0.0:8989:8989"
+      volumes:
+        - ./test_neural:/TNP
+        - /var/run/docker.sock/:/var/run/docker.sock
+        - /usr/bin/docker:/usr/bin/docker
+      stdin_open: true
+      tty: true
